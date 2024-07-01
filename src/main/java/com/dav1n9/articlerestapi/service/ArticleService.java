@@ -24,8 +24,7 @@ public class ArticleService {
     }
 
     public Article findById(long id) {
-        return articleRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException(ErrorCode.NOT_FOUND));
+        return findArticleById(id);
     }
 
     public List<Article> findAll() {
@@ -33,9 +32,7 @@ public class ArticleService {
     }
 
     public Article update(long id, UpdateArticleRequestDto request) {
-        Article article = articleRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException(ErrorCode.NOT_FOUND));
-
+        Article article = findArticleById(id);
         validatePassword(article, request.getPassword());
 
         article.update(request.getTitle(), request.getUsername(), request.getContent());
@@ -43,13 +40,16 @@ public class ArticleService {
     }
 
     public Long delete(long id, DeleteArticleRequestDto request) {
-        Article article = articleRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException(ErrorCode.NOT_FOUND));
-
+        Article article = findArticleById(id);
         validatePassword(article, request.getPassword());
 
         articleRepository.deleteById(id);
         return id;
+    }
+
+    private Article findArticleById(long id) {
+        return articleRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException(ErrorCode.NOT_FOUND));
     }
 
     private void validatePassword(Article article, String password) {
