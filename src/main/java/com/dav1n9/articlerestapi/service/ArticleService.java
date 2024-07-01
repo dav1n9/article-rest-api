@@ -4,7 +4,8 @@ import com.dav1n9.articlerestapi.domain.Article;
 import com.dav1n9.articlerestapi.dto.CreateArticleRequestDto;
 import com.dav1n9.articlerestapi.dto.DeleteArticleRequestDto;
 import com.dav1n9.articlerestapi.dto.UpdateArticleRequestDto;
-import com.dav1n9.articlerestapi.exception.ErrorCode;
+import com.dav1n9.articlerestapi.constants.ErrorCode;
+import com.dav1n9.articlerestapi.exception.NotFoundException;
 import com.dav1n9.articlerestapi.exception.PasswordMismatchException;
 import com.dav1n9.articlerestapi.repository.ArticleRepository;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +25,7 @@ public class ArticleService {
 
     public Article findById(long id) {
         return articleRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("not found: " + id));
+                .orElseThrow(() -> new NotFoundException(ErrorCode.NOT_FOUND));
     }
 
     public List<Article> findAll() {
@@ -33,7 +34,7 @@ public class ArticleService {
 
     public Article update(long id, UpdateArticleRequestDto request) {
         Article article = articleRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("not found: " + id));
+                .orElseThrow(() -> new NotFoundException(ErrorCode.NOT_FOUND));
 
         validatePassword(article, request.getPassword());
 
@@ -43,7 +44,7 @@ public class ArticleService {
 
     public Long delete(long id, DeleteArticleRequestDto request) {
         Article article = articleRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("not found: " + id));
+                .orElseThrow(() -> new NotFoundException(ErrorCode.NOT_FOUND));
 
         validatePassword(article, request.getPassword());
 
@@ -53,7 +54,7 @@ public class ArticleService {
 
     private void validatePassword(Article article, String password) {
         if (!article.getPassword().equals(password)) {
-            throw new IllegalArgumentException("is not correct password");
+            throw new PasswordMismatchException(ErrorCode.PASSWORD_MISMATCH);
         }
     }
 }
