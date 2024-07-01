@@ -29,7 +29,7 @@ public class ArticleService {
     }
 
     public List<Article> findAll() {
-        return articleRepository.findAll();
+        return articleRepository.findAllByOrderByCreatedAtDesc();
     }
 
     public Article update(long id, UpdateArticleRequestDto request) {
