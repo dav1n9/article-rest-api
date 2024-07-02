@@ -8,14 +8,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
-    @ExceptionHandler(PasswordMismatchException.class)
-    public ResponseEntity<ErrorResponse> handlePasswordMismatchException(PasswordMismatchException ex){
-        ErrorResponse response = new ErrorResponse(ex.getErrorCode());
-        return new ResponseEntity<>(response, HttpStatus.valueOf(ex.getErrorCode().getStatus()));
-    }
-
-    @ExceptionHandler(NotFoundException.class)
-    public ResponseEntity<ErrorResponse> handleNotFoundException(NotFoundException ex){
+    @ExceptionHandler(BusinessException.class)
+    public ResponseEntity<ErrorResponse> handleBusinessException (BusinessException ex){
         ErrorResponse response = new ErrorResponse(ex.getErrorCode());
         return new ResponseEntity<>(response, HttpStatus.valueOf(ex.getErrorCode().getStatus()));
     }

@@ -5,8 +5,7 @@ import com.dav1n9.articlerestapi.dto.CreateArticleRequestDto;
 import com.dav1n9.articlerestapi.dto.DeleteArticleRequestDto;
 import com.dav1n9.articlerestapi.dto.UpdateArticleRequestDto;
 import com.dav1n9.articlerestapi.constants.ErrorCode;
-import com.dav1n9.articlerestapi.exception.NotFoundException;
-import com.dav1n9.articlerestapi.exception.PasswordMismatchException;
+import com.dav1n9.articlerestapi.exception.BusinessException;
 import com.dav1n9.articlerestapi.repository.ArticleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -51,12 +50,12 @@ public class ArticleService {
 
     private Article findArticleById(long id) {
         return articleRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException(ErrorCode.NOT_FOUND));
+                .orElseThrow(() -> new BusinessException(ErrorCode.NOT_FOUND));
     }
 
     private void validatePassword(Article article, String password) {
         if (!article.getPassword().equals(password)) {
-            throw new PasswordMismatchException(ErrorCode.PASSWORD_MISMATCH);
+            throw new BusinessException(ErrorCode.PASSWORD_MISMATCH);
         }
     }
 }
