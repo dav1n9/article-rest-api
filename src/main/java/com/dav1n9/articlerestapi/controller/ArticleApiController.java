@@ -43,7 +43,7 @@ public class ArticleApiController {
                 .body(articles);
     }
 
-    @PutMapping("/api/articles/{id}")
+    @PatchMapping("/api/articles/{id}")
     public ResponseEntity<ArticleResponseDto> updateArticle(@PathVariable long id,
                                                             @RequestBody UpdateArticleRequestDto request) {
         Article article = articleService.update(id, request);

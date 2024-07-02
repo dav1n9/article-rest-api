@@ -1,5 +1,6 @@
 package com.dav1n9.articlerestapi.domain;
 
+import com.dav1n9.articlerestapi.dto.UpdateArticleRequestDto;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -28,7 +29,7 @@ public class Article {
     @Column(name = "password", nullable = false)
     private String password;
 
-    @Column(name = "content", nullable = false)
+    @Column(name = "content")
     private String content;
 
     @CreatedDate
@@ -43,9 +44,12 @@ public class Article {
         this.content = content;
     }
 
-    public void update(String title, String username, String content) {
-        this.title = title;
-        this.username = username;
-        this.content = content;
+    public void update(UpdateArticleRequestDto request) {
+        if (request.getTitle() != null)
+            this.title = request.getTitle();
+        if (request.getUsername() != null)
+            this.username = request.getUsername();
+        if (request.getContent() != null)
+            this.content = request.getContent();
     }
 }

@@ -10,6 +10,7 @@ import com.dav1n9.articlerestapi.exception.PasswordMismatchException;
 import com.dav1n9.articlerestapi.repository.ArticleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -31,11 +32,12 @@ public class ArticleService {
         return articleRepository.findAllByOrderByCreatedAtDesc();
     }
 
+    @Transactional
     public Article update(long id, UpdateArticleRequestDto request) {
         Article article = findArticleById(id);
         validatePassword(article, request.getPassword());
 
-        article.update(request.getTitle(), request.getUsername(), request.getContent());
+        article.update(request);
         return article;
     }
 
